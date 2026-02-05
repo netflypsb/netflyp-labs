@@ -1,10 +1,10 @@
 # Solaris
 
-**An Autonomous AI Agent System with Infinite Context Capability**
-
 <p align="center">
   <img src="solaris.jpg" alt="Solaris Logo" width="200" height="200">
 </p>
+
+**An Autonomous AI Agent System with Infinite Context Capability**
 
 Solaris is a desktop-based autonomous AI agent that can complete complex computer and web-based projects with minimal human intervention. Using the innovative RSAU Loop combined with RLM-graph memory architecture, Solaris overcomes AI model context limitations and achieves superior accuracy in long-horizon tasks.
 
