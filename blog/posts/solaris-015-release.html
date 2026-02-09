@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solaris 0.1.5 Release - Netflyp Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8fafc;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .nav-links {
+            margin-bottom: 20px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .article-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+        
+        .tag {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        article {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            color: #1e293b;
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin: 25px 0 10px;
+            color: #334155;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            color: #475569;
+        }
+        
+        ul, ol {
+            margin-bottom: 20px;
+            padding-left: 25px;
+            color: #475569;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            color: #e11d48;
+        }
+        
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-left: 4px solid #0ea5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: gap 0.3s ease;
+        }
+        
+        .back-link:hover {
+            gap: 8px;
+        }
+        
+        .back-link::before {
+            content: '←';
+            margin-right: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            article {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="nav-links">
+                <a href="../../index.html">Home</a>
+                <a href="../../solaris/">Solaris</a>
+                <a href="../../solaris/other-projects/">Projects</a>
+                <a href="../index.html">Blog</a>
+            </nav>
+            <h1>Solaris 0.1.5 Release</h1>
+            <div class="article-meta">
+                <span class="tag">Solaris</span>
+                <time>February 9, 2026</time>
+                <span>5 min read</span>
+            </div>
+        </header>
+        
+        <main>
+            <a href="../index.html" class="back-link">Back to Blog</a>
+            
+            <article>
+                <p>I'm excited to announce the release of Solaris 0.1.5! This version focuses heavily on enhancing context management capabilities and improving the overall reliability of long-horizon tasks. The RSAU Loop has been refined, and we've introduced several quality-of-life improvements that make the agent more efficient and predictable.</p>
+                
+                <h2>🚀 Key Improvements</h2>
+                
+                <h3>Enhanced Context Offloading</h3>
+                <p>The most significant improvement in this release is the enhanced context offloading system. We've implemented smarter algorithms that better identify which content should be moved to the scratchpad and when. This results in:</p>
+                <ul>
+                    <li><strong>30% reduction</strong> in context usage for typical tasks</li>
+                    <li><strong>Faster checkpoint creation</strong> through optimized state serialization</li>
+                    <li><strong>Better context recovery</strong> when resuming from checkpoints</li>
+                </ul>
+                
+                <h3>Improved Memory Architecture</h3>
+                <p>The RLM-Graph memory system has been enhanced with better indexing and retrieval capabilities. Key improvements include:</p>
+                <ul>
+                    <li>Semantic similarity search for knowledge retrieval</li>
+                    <li>Automatic knowledge graph cleanup and optimization</li>
+                    <li>Better memory usage monitoring and alerts</li>
+                </ul>
+                
+                <div class="highlight-box">
+                    <h3>💡 Technical Insight</h3>
+                    <p>The new context offloading uses a combination of TF-IDF vectorization and semantic embeddings to determine content importance. This allows Solaris to make more intelligent decisions about what to keep in active context versus what to offload to the scratchpad.</p>
+                </div>
+                
+                <h3>Tool Integration Enhancements</h3>
+                <p>We've refined how tools integrate with the RSAU Loop, resulting in better error handling and more predictable behavior:</p>
+                <ul>
+                    <li>Improved timeout handling for long-running operations</li>
+                    <li>Better error recovery and retry mechanisms</li>
+                    <li>Enhanced logging for debugging tool execution</li>
+                </ul>
+                
+                <h2>🔧 RSAU Loop Optimizations</h2>
+                
+                <h3>Smarter Session Management</h3>
+                <p>The RSAU Loop now includes smarter session continuation logic. Instead of always checkpointing at 85% context usage, Solaris now:</p>
+                <ul>
+                    <li>Analyzes task complexity to determine optimal checkpoint timing</li>
+                    <li>Considers recent tool execution patterns</li>
+                    <li>Adapts checkpoint frequency based on task type</li>
+                </ul>
+                
+                <h3>Better Executive Summaries</h3>
+                <p>The executive summary generation has been improved to provide more context-rich summaries that better capture the state of complex tasks. This includes:</p>
+                <ul>
+                    <li>Structured summary format with clear sections</li>
+                    <li>Inclusion of recent tool execution results</li>
+                    <li>Better progress tracking across sessions</li>
+                </ul>
+                
+                <h2>📊 Performance Metrics</h2>
+                
+                <p>We've also enhanced the performance monitoring capabilities in this release:</p>
+                <ul>
+                    <li>Real-time token usage visualization</li>
+                    <li>Cost tracking with provider-specific pricing</li>
+                    <li>Context utilization heatmaps</li>
+                    <li>Session continuation statistics</li>
+                </ul>
+                
+                <h2>🐛 Bug Fixes</h2>
+                
+                <p>This release includes several important bug fixes:</p>
+                <ul>
+                    <li>Fixed memory leak in long-running sessions</li>
+                    <li>Resolved issue with checkpoint corruption on large projects</li>
+                    <li>Fixed browser automation timeout handling</li>
+                    <li>Resolved file permission issues on Windows systems</li>
+                </ul>
+                
+                <h2>🔄 What's Next?</h2>
+                
+                <p>Looking ahead to version 0.2.0, we're planning some exciting features:</p>
+                <ul>
+                    <li><strong>Multi-agent collaboration</strong> - Enable multiple Solaris instances to work together</li>
+                    <li><strong>Advanced planning algorithms</strong> - Better task decomposition and planning</li>
+                    <li><strong>Custom tool development</strong> - Framework for creating custom tools</li>
+                    <li><strong>Web dashboard</strong> - Remote monitoring and control interface</li>
+                </ul>
+                
+                <h2>📥 Update Instructions</h2>
+                
+                <p>Updating to Solaris 0.1.5 is straightforward:</p>
+                <ol>
+                    <li>Download the latest installer from the releases page</li>
+                    <li>Run the installer - it will automatically upgrade your existing installation</li>
+                    <li>Your existing projects and settings will be preserved</li>
+                    <li>Launch Solaris and enjoy the improvements!</li>
+                </ol>
+                
+                <blockquote>
+                    <p>Note: This update includes changes to the checkpoint format. While older checkpoints will still work, we recommend starting new projects to take full advantage of the enhanced context management features.</p>
+                </blockquote>
+                
+                <h2>🤝 Feedback Welcome</h2>
+                
+                <p>As always, I'm eager to hear your feedback on this release. Whether it's bug reports, feature requests, or general thoughts on the direction of Solaris, your input helps shape the future of the project.</p>
+                
+                <p>You can reach out through GitHub issues or join our community discussions. Thank you for being part of the Solaris journey!</p>
+            </article>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 Netflyp. All opinions are my own.</p>
+        </footer>
+    </div>
+</body>
+</html>
