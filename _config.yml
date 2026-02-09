@@ -1,13 +1,12 @@
 # Site settings
-title: Netflyp - Projects & Development Blog
-description: Welcome to my project showcase and development blog
-baseurl: ""
-url: "https://netflyp.github.io"
+title: Netflyp Labs - Technology & AI R&D Group
+description: Technology and AI R&D Group focused on making Agentic AI systems more accurate, complete, autonomous, and accessible
+baseurl: "/netflyp-labs"
+url: "https://netflypsb.github.io"
 
 # Build settings
 markdown: kramdown
 highlighter: rouge
-theme: minima
 
 # Plugins
 plugins:
@@ -24,8 +23,8 @@ exclude:
   - vendor/cache/
   - vendor/gems/
   - vendor/ruby/
-  - .github/
   - README.md
+  - solaris/
 
 # Include specific files
 include:
@@ -44,22 +43,18 @@ defaults:
       type: "posts"
     values:
       layout: "post"
-      author: "Netflyp"
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: "page"
+      author: "Netflyp Labs"
 
 # SEO settings
 twitter:
-  username: netflyp
+  username: netflypsb
   card: summary
 
 social:
-  name: Netflyp
+  name: Netflyp Labs
   links:
-    - https://github.com/netflyp
+    - https://github.com/netflypsb
+    - https://huggingface.co/netflypsb
 
 # Google Analytics (optional)
 google_analytics: # UA-XXXXXXXX-X
