@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solaris - Netflyp Labs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo-container img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .sidebar h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-bottom: 15px;
+        }
+        
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-menu a:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-menu .nav-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .social-links {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin-right: 10px;
+            color: #667eea;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: #764ba2;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero .tagline {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .project-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+        
+        .project-info h2 {
+            font-size: 2.5rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        
+        .project-info .version {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .markdown-content {
+            color: #4a5568;
+            line-height: 1.7;
+        }
+        
+        .markdown-content h1 {
+            color: #2d3748;
+            font-size: 2rem;
+            margin: 30px 0 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        
+        .markdown-content h2 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            margin: 25px 0 15px;
+        }
+        
+        .markdown-content h3 {
+            color: #2d3748;
+            font-size: 1.3rem;
+            margin: 20px 0 10px;
+        }
+        
+        .markdown-content h4 {
+            color: #2d3748;
+            font-size: 1.1rem;
+            margin: 15px 0 8px;
+        }
+        
+        .markdown-content p {
+            margin-bottom: 15px;
+        }
+        
+        .markdown-content ul, .markdown-content ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        
+        .markdown-content li {
+            margin-bottom: 8px;
+        }
+        
+        .markdown-content code {
+            background: #f7fafc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .markdown-content pre {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .markdown-content pre code {
+            background: none;
+            padding: 0;
+        }
+        
+        .markdown-content blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+            margin: 15px 0;
+            color: #718096;
+            font-style: italic;
+        }
+        
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .markdown-content th, .markdown-content td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .markdown-content th {
+            background: #f7fafc;
+            font-weight: 600;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .project-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
+    
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-container">
+            <img src="assets/netflyp-labs-logo.png" alt="Netflyp Labs Logo">
+        </div>
+        
+        <nav>
+            <h3>Projects</h3>
+            <ul class="nav-menu">
+                <li><a href="index.html#solaris"><span class="nav-icon">🚀</span> Solaris</a></li>
+                <li><a href="orion.html"><span class="nav-icon">⭐</span> Orion</a></li>
+                <li><a href="orion-cowork.html"><span class="nav-icon">🤝</span> Orion-Cowork</a></li>
+                <li><a href="mynotes.html"><span class="nav-icon">📝</span> MyNotes</a></li>
+            </ul>
+            
+            <h3>Resources</h3>
+            <ul class="nav-menu">
+                <li><a href="installer.html"><span class="nav-icon">💾</span> Installers</a></li>
+                <li><a href="blog/"><span class="nav-icon">📚</span> Blog</a></li>
+            </ul>
+        </nav>
+        
+        <div class="social-links">
+            <h3>Connect</h3>
+            <a href="https://github.com/netflypsb" target="_blank" title="GitHub">📦</a>
+            <a href="https://huggingface.co/netflypsb" target="_blank" title="HuggingFace">🤗</a>
+            <a href="https://www.youtube.com/" target="_blank" title="YouTube">📺</a>
+        </div>
+    </aside>
+    
+    <main class="main-content">
+        <div class="container">
+            <header>
+                <div class="hero">
+                    <h1>Solaris</h1>
+                    <p class="tagline">Autonomous AI Agent System</p>
+                </div>
+            </header>
+            
+            <section class="content-section">
+                <div class="project-header">
+                    <img src="assets/solaris.jpg" alt="Solaris Logo" class="project-logo">
+                    <div class="project-info">
+                        <h2>Solaris</h2>
+                        <div class="version">Version 0.1.5</div>
+                        <p style="color: #4a5568; font-size: 1.1rem;">
+                            An Autonomous AI Agent System with Infinite Context Capability
+                        </p>
+                        <div style="margin-top: 20px;">
+                            <a href="installer.html" class="btn btn-primary">Download Installer</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="markdown-content">
+                    <!-- README.md content will be rendered here -->
+                    <p align="center">
+                      <img src="assets/solaris.jpg" alt="Solaris Logo" width="200" height="200">
+                    </p>
+
+                    <p><strong>Version 3.0 - An Autonomous AI Agent System with Infinite Context Capability</strong></p>
+
+                    <p>Solaris is a desktop-based autonomous AI agent that can complete complex computer and web-based projects with minimal human intervention. Using the innovative RSAU Loop combined which is an iteration of the <strong>Recursive Language Model (RLM)</strong> method, combined with <strong>Knowledge Graph (KG)</strong>, Solaris overcomes AI model context limitations and achieves superior accuracy and completeness in long-horizon tasks.</p>
+
+                    <h2>🆕 Recent Updates (v3.0)</h2>
+
+                    <h3>🎨 <strong>AI Image Generation & Analysis</strong></h3>
+                    <ul>
+                    <li>Generate images via OpenRouter with Gemini 2.5 Flash, Flux, and more</li>
+                    <li>Analyze existing images with vision-capable AI models</li>
+                    <li>Customizable aspect ratios, image sizes, and model selection</li>
+                    </ul>
+
+                    <h3>🔌 <strong>MCP Client & Subagent Support</strong></h3>
+                    <ul>
+                    <li>Connect to external Model Context Protocol servers</li>
+                    <li>Delegate tasks to specialized subagents</li>
+                    <li>Dynamic tool discovery and namespace management</li>
+                    </ul>
+
+                    <h3>🛑 <strong>Enhanced Control & Safety</strong></h3>
+                    <ul>
+                    <li>Real-time stop button with proper cancellation</li>
+                    <li>Multiple permission modes for different use cases</li>
+                    <li>Checkpoint timeline safety warnings</li>
+                    <li>Interactive <code>ask_user</code> tool for AI-initiated questions</li>
+                    </ul>
+
+                    <h3>🎯 <strong>UI/UX Improvements</strong></h3>
+                    <ul>
+                    <li>Refactored settings page with modular components</li>
+                    <li>Fixed project display on landing page</li>
+                    <li>Enhanced skills organization and management</li>
+                    <li>Improved reference search performance</li>
+                    </ul>
+
+                    <h3>📚 <strong>Enhanced Skills System</strong></h3>
+                    <ul>
+                    <li>Upgraded Python office skills with critical rules</li>
+                    <li>Centralized skills directory location</li>
+                    <li>Enhanced content creation capabilities</li>
+                    <li>Creator mode planning for specialized content creation</li>
+                    </ul>
+
+                    <h2>🚀 Key Features</h2>
+
+                    <h3>🧠 <strong>Infinite Context Window</strong></h3>
+                    <ul>
+                    <li><strong>RSAU Loop</strong> (Reason-Search-Act-Update) with file system as context enables (almost) unlimited context - disregarding the context limit of the underlying AI model.</li>
+                    <li><strong>Session Continuation</strong> automatically checkpoints at 85% context usage</li>
+                    <li><strong>Fresh Context Windows</strong> prevent context rot and maintain accuracy</li>
+                    <li><strong>Executive Summary</strong> provides task continuity across sessions</li>
+                    </ul>
+
+                    <h3>🛠️ <strong>Comprehensive Tool Suite</strong></h3>
+                    <ul>
+                    <li><strong>40+ Browser Automation Tools</strong> - Full web interaction capabilities</li>
+                    <li><strong>Complete Office Suite</strong> - Word, Excel, PowerPoint generation & manipulation</li>
+                    <li><strong>File System Operations</strong> - Read, write, edit, search across projects</li>
+                    <li><strong>PDF Operations</strong> - Generate and parse PDF documents</li>
+                    <li><strong>AI Image Generation & Analysis</strong> - Create and analyze images with vision models</li>
+                    <li><strong>Scratchpad System</strong> - Intelligent context offloading</li>
+                    <li><strong>MCP Client Support</strong> - Connect to external Model Context Protocol servers</li>
+                    <li><strong>Subagent System</strong> - Delegate tasks to specialized agents</li>
+                    </ul>
+
+                    <h3>🎯 <strong>Multi-Model AI Support</strong></h3>
+                    <ul>
+                    <li><strong>OpenRouter</strong> - Access to 100+ models via single API</li>
+                    <li><strong>AI Image Generation</strong> - OpenRouter integration with Gemini, Flux, and more</li>
+                    <li><strong>Vision Models</strong> - Image analysis and understanding capabilities</li>
+                    </ul>
+
+                    <h3>📚 <strong>Skills & Knowledge</strong></h3>
+                    <ul>
+                    <li><strong>builtin skills and hundreds of load-able Skills</strong> for specialized tasks</li>
+                    <li><strong>Knowledge Store</strong> learns from your preferences</li>
+                    <li><strong>Reflection System</strong> improves over time</li>
+                    </ul>
+
+                    <h3>🖥️ <strong>Modern Desktop Application</strong></h3>
+                    <ul>
+                    <li><strong>Tauri Framework</strong> - Lightweight, secure, cross-platform</li>
+                    <li><strong>React 18 + TypeScript</strong> - Modern, responsive UI</li>
+                    <li><strong>Real-time Streaming</strong> - Watch the agent think and work</li>
+                    <li><strong>Refactored Settings</strong> - Modular, tabbed configuration interface</li>
+                    <li><strong>Enhanced Project Management</strong> - Improved landing page and project organization</li>
+                    </ul>
+
+                    <h2>🔄 The RSAU Loop: Breaking Context Barriers</h2>
+
+                    <p>The RSAU (Reason-Search-Act-Update) loop is Solaris's core innovation for handling unlimited task complexity:</p>
+
+                    <h3>1. <strong>REASON</strong></h3>
+                    <ul>
+                    <li>Think about current state and next steps</li>
+                    <li>Read executive summary for task context</li>
+                    <li>Analyze project structure and progress</li>
+                    </ul>
+
+                    <h3>2. <strong>SEARCH</strong></h3>
+                    <ul>
+                    <li>Gather context from filesystem</li>
+                    <li>Retrieve relevant knowledge</li>
+                    <li>Search for specific information</li>
+                    </ul>
+
+                    <h3>3. <strong>ACT</strong></h3>
+                    <ul>
+                    <li>Execute the next action using appropriate tools</li>
+                    <li>Modify files, interact with web, create documents</li>
+                    <li>Handle complex multi-step operations</li>
+                    </ul>
+
+                    <h3>4. <strong>UPDATE</strong></h3>
+                    <ul>
+                    <li>Update executive summary with progress</li>
+                    <li>Save important context to scratchpad</li>
+                    <li>Prepare for next iteration</li>
+                    </ul>
+
+                    <h3>🔄 <strong>Session Continuation</strong></h3>
+
+                    <p>When context reaches 85% utilization:</p>
+                    <ol>
+                    <li><strong>Checkpoint Creation</strong> - Full state snapshot saved</li>
+                    <li><strong>Session End</strong> - Clean termination with summary</li>
+                    <li><strong>Fresh Start</strong> - New session with clean context window</li>
+                    <li><strong>Continuation</strong> - Seamlessly resume from checkpoint</li>
+                    </ol>
+
+                    <p>This process creates <strong>infinite effective context</strong> while maintaining <strong>high accuracy</strong> by preventing context rot.</p>
+
+                    <h2>🧠 RLM-Graph Memory Architecture</h2>
+
+                    <p>Solaris uses a sophisticated multi-tier memory system:</p>
+
+                    <table>
+                    <thead>
+                    <tr>
+                    <th>Tier</th>
+                    <th>Purpose</th>
+                    <th>Location</th>
+                    <th>Lifetime</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                    <td><strong>Short-term</strong></td>
+                    <td>Active working context</td>
+                    <td>Thread messages</td>
+                    <td>Session</td>
+                    </tr>
+                    <tr>
+                    <td><strong>Medium-term</strong></td>
+                    <td>Context offloading</td>
+                    <td><code>.solaris/scratchpad/</code></td>
+                    <td>Project</td>
+                    </tr>
+                    <tr>
+                    <td><strong>Long-term</strong></td>
+                    <td>Planning documents</td>
+                    <td><code>.solaris/guide/</code></td>
+                    <td>Project</td>
+                    </tr>
+                    <tr>
+                    <td><strong>Persistent</strong></td>
+                    <td>Checkpoints</td>
+                    <td><code>.solaris/state/</code></td>
+                    <td>Project</td>
+                    </tr>
+                    <tr>
+                    <td><strong>Knowledge</strong></td>
+                    <td>Learned patterns</td>
+                    <td><code>.solaris/knowledge/</code></td>
+                    <td>Project</td>
+                    </tr>
+                    </tbody>
+                    </table>
+
+                    <h3>🗃️ <strong>Scratchpad System</strong></h3>
+                    <p>Intelligently offloads content from context window:</p>
+                    <ul>
+                    <li><code>scratchpad_write</code> - Save research findings, large content</li>
+                    <li><code>scratchpad_read</code> - Retrieve when needed</li>
+                    <li>Automatic summaries keep context lean</li>
+                    </ul>
+
+                    <h3>📚 <strong>Knowledge Store</strong> (In development)</h3>
+                    <p>Learns from your interactions:</p>
+                    <ul>
+                    <li><strong>User Preferences</strong> - Coding styles, frameworks, patterns</li>
+                    <li><strong>Error Solutions</strong> - Problems encountered and resolved</li>
+                    <li><strong>Workflow Patterns</strong> - How you approach tasks</li>
+                    <li><strong>Reflection System</strong> - Improves over time</li>
+                    </ul>
+
+                    <h2>🛠️ Tool Capabilities</h2>
+
+                    <h3>🌐 <strong>Browser Automation</strong> (40+ Tools)</h3>
+                    <ul>
+                    <li>Navigation and content extraction</li>
+                    <li>Form filling and submission</li>
+                    <li>Multi-tab management</li>
+                    <li>Cookie and authentication handling</li>
+                    <li>Screenshot capture</li>
+                    <li>PDF printing from web</li>
+                    </ul>
+
+                    <h3>📊 <strong>Office Suite</strong></h3>
+                    <ul>
+                    <li><strong>Word Documents</strong> (.docx) - Create, read, modify</li>
+                    <li><strong>Excel Spreadsheets</strong> (.xlsx) - Full read/write with charts</li>
+                    <li><strong>PowerPoint</strong> (.pptx) - 100+ shapes, tables, charts</li>
+                    <li><strong>PDF Operations</strong> - Generate and parse documents</li>
+                    </ul>
+
+                    <h3>📁 <strong>File Management</strong></h3>
+                    <ul>
+                    <li>Read, write, edit files</li>
+                    <li>Directory operations</li>
+                    <li>Search and grep across projects</li>
+                    <li>File system monitoring</li>
+                    </ul>
+
+                    <h3>🎯 <strong>Specialized Tools</strong></h3>
+                    <ul>
+                    <li>Planning and executive summary management</li>
+                    <li>Tool discovery and search</li>
+                    <li>Skills loading and execution</li>
+                    <li>Human-in-the-loop approvals</li>
+                    <li><strong>AI Image Generation</strong> - Create images via OpenRouter with customizable parameters</li>
+                    <li><strong>AI Image Analysis</strong> - Analyze images with vision-capable models</li>
+                    <li><strong>ask_user Tool</strong> - AI can ask questions and get user feedback</li>
+                    <li><strong>MCP Client</strong> - Connect to external Model Context Protocol servers</li>
+                    <li><strong>Subagent Delegation</strong> - Delegate tasks to specialized subagents</li>
+                    </ul>
+
+                    <h2>🚀 Installation</h2>
+
+                    <h3>📦 <strong>Download Installer</strong></h3>
+                    <p>Download the installer - Install - Use</p>
+                    <ul>
+                    <li>Currently only Windows is supported</li>
+                    </ul>
+
+                    <h3>⚙️ <strong>Installation Steps</strong></h3>
+                    <ol>
+                    <li>Run the downloaded installer</li>
+                    <li>Follow the installation wizard</li>
+                    <li>Launch Solaris from your applications</li>
+                    </ol>
+
+                    <h3>🔑 <strong>API Key Setup</strong></h3>
+                    <ol>
+                    <li>Open Solaris Settings</li>
+                    <li>Add your AI provider API keys</li>
+                    </ol>
+
+                    <h2>🎯 Quick Start</h2>
+
+                    <h3>1. <strong>Create a New Project</strong></h3>
+                    <pre><code>File → New Project → Choose directory
+                    </code></pre>
+
+                    <h3>2. <strong>Configure AI Model</strong></h3>
+                    <pre><code>Settings → AI Provider → Select model
+                    </code></pre>
+
+                    <h3>3. <strong>Start Your First Task</strong></h3>
+                    <pre><code>Chat Panel: "Build a REST API for task management"
+                    </code></pre>
+
+                    <h3>4. <strong>Watch Solaris Work</strong></h3>
+                    <ul>
+                    <li>Real-time agent activity display</li>
+                    <li>Tool execution monitoring</li>
+                    <li>Context usage tracking</li>
+                    <li>Session continuation when needed</li>
+                    </ul>
+
+                    <h2>📖 Usage Examples</h2>
+
+                    <h3>💻 <strong>Software Development</strong></h3>
+                    <pre><code>"Create a React TypeScript application with user authentication,
+                    including login, registration, and dashboard with user profile."
+                    </code></pre>
+
+                    <h3>📊 <strong>Data Analysis</strong></h3>
+                    <pre><code>"Analyze the sales data in sales.xlsx, create charts showing
+                    monthly trends, and generate a PowerPoint presentation for stakeholders."
+                    </code></pre>
+
+                    <h3>🌐 <strong>Web Research</strong></h3>
+                    <pre><code>"Research the latest AI trends, compile findings into a structured
+                    report, and create a summary document with key insights."
+                    </code></pre>
+
+                    <h3>📝 <strong>Document Generation</strong></h3>
+                    <pre><code>"Create a comprehensive project proposal document including
+                    timeline, budget estimates, and risk analysis."
+                    </code></pre>
+
+                    <h2>🔧 Configuration</h2>
+
+                    <h3>🎛️ <strong>Agent Settings</strong></h3>
+                    <ul>
+                    <li><strong>Max Iterations</strong>: 100 (default)</li>
+                    <li><strong>Context Threshold</strong>: 85% (triggers checkpoint)</li>
+                    <li><strong>Streaming</strong>: Enabled for real-time updates</li>
+                    <li><strong>HITL</strong>: Human-in-the-loop for dangerous actions</li>
+                    <li><strong>Permission Modes</strong>: Default, AcceptEdits, Plan, BypassAll</li>
+                    <li><strong>RALPH Mode</strong>: Auto-resume capability for autonomous completion</li>
+                    <li><strong>Stop Button</strong>: Real-time agent cancellation with proper cleanup</li>
+                    </ul>
+
+                    <h3>🧠 <strong>Memory Settings</strong></h3>
+                    <ul>
+                    <li><strong>Scratchpad Size</strong>: Unlimited</li>
+                    <li><strong>Knowledge Retention</strong>: Permanent</li>
+                    <li><strong>Checkpoint History</strong>: 50 sessions</li>
+                    <li><strong>Reflection Interval</strong>: Every 10 tasks</li>
+                    </ul>
+
+                    <h3>🌐 <strong>Provider Settings</strong></h3>
+                    <ul>
+                    <li><strong>Primary Model</strong>: Choose your preferred AI</li>
+                    <li><strong>Fallback Models</strong>: Automatic failover</li>
+                    <li><strong>Cost Tracking</strong>: Real-time token usage</li>
+                    <li><strong>Rate Limits</strong>: Respect provider limits</li>
+                    <li><strong>Image Generation Model</strong>: Dedicated model selection for image creation</li>
+                    <li><strong>OpenRouter Integration</strong>: Access to 100+ models including vision and image generation</li>
+                    </ul>
+
+                    <h2>🏢 System Requirements</h2>
+
+                    <h3>💻 <strong>Minimum Requirements</strong></h3>
+                    <ul>
+                    <li><strong>OS</strong>: Windows 10+</li>
+                    <li><strong>RAM</strong>: 8GB (16GB recommended)</li>
+                    <li><strong>Storage</strong>: 500MB free space</li>
+                    <li><strong>Network</strong>: Internet connection for AI services</li>
+                    </ul>
+
+                    <h3>🚀 <strong>Recommended Requirements</strong></h3>
+                    <ul>
+                    <li><strong>OS</strong>: Windows 11</li>
+                    <li><strong>RAM</strong>: 16GB+ (for large projects)</li>
+                    <li><strong>Storage</strong>: 2GB+ (for projects and knowledge)</li>
+                    <li><strong>Network</strong>: Stable broadband connection</li>
+                    </ul>
+
+                    <h2>🔒 Security & Privacy</h2>
+
+                    <h3>🛡️ <strong>Local Processing</strong></h3>
+                    <ul>
+                    <li>All project files remain on your device</li>
+                    <li>API keys encrypted and stored locally</li>
+                    <li>No data sent to external servers except AI API calls</li>
+                    </ul>
+
+                    <h3>🔐 <strong>API Key Security</strong></h3>
+                    <ul>
+                    <li>AES-256 encryption for stored keys</li>
+                    <li>Secure key derivation function</li>
+                    <li>No plaintext key storage</li>
+                    </ul>
+
+                    <h3>🚫 <strong>Sandboxing</strong></h3>
+                    <ul>
+                    <li>File access limited to project directories</li>
+                    <li>Browser operations in isolated Chrome instance</li>
+                    <li>Tool execution with permission checks</li>
+                    </ul>
+
+                    <h2>🤝 Human-in-the-Loop (HITL)</h2>
+
+                    <p>Solaris includes intelligent HITL for safety and collaboration:</p>
+
+                    <h3>⚠️ <strong>Dangerous Actions</strong></h3>
+                    <ul>
+                    <li>File deletions outside project</li>
+                    <li>System-level operations</li>
+                    <li>Network requests to unknown domains</li>
+                    <li>Large financial transactions</li>
+                    </ul>
+
+                    <h3>✅ <strong>Approval Workflow</strong></h3>
+                    <ol>
+                    <li>Agent detects dangerous action</li>
+                    <li>Approval dialog appears with details</li>
+                    <li>User reviews and approves/denies</li>
+                    <li>Agent proceeds based on decision</li>
+                    </ol>
+
+                    <h3>🗣️ <strong>Interactive Features</strong></h3>
+                    <ul>
+                    <li><strong>ask_user Tool</strong>: AI can ask questions with 2-4 options</li>
+                    <li><strong>Multi-select Support</strong>: Complex decision making</li>
+                    <li><strong>Context-aware Questions</strong>: Relevant to current task</li>
+                    <li><strong>Fast Response</strong>: 500ms polling for immediate feedback</li>
+                    </ul>
+
+                    <h2>📄 License</h2>
+
+                    <p>Solaris is proprietary software. </p>
+
+                    <h2>🤝 Contributing</h2>
+
+                    <p>We're not accepting external contributions at this time, but we appreciate:</p>
+                    <ul>
+                    <li><strong>Bug Reports</strong>: Please file issues with detailed reproduction steps</li>
+                    <li><strong>Feature Requests</strong>: Submit with clear use cases</li>
+                    <li><strong>Feedback</strong>: Share your experience and suggestions</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>&copy; 2026 Netflyp Labs. Building the future of autonomous AI agents.</p>
+        </footer>
+    </main>
+    
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
